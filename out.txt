@@ -1,0 +1,12 @@
+total urls 5, domains 2, paths 5
+
+top domains
+4 en.wikipedia.org
+1 www.google.com
+
+top paths
+1 /search
+1 /w/index.php
+1 /wiki/Free_software
+1 /wiki/Kirschkuchen
+1 /wiki/Main_Page
