@@ -56,7 +56,7 @@ public:
             m_inFile(aInFile),
             m_outFile(aOutFile),
             m_mentions(aMentions),
-            m_buffer(4096)
+            m_buffer(8192)
     {
     }
 
@@ -64,14 +64,15 @@ public:
     {
         std::string domain;
         std::string path;
+        resetPtrs();
+        char readBuffer[1024];
         while (!feof(m_inFile) && !ferror(m_inFile)) {
-            char readBuffer[512];
             size_t bytesRead = fread(readBuffer, 1, sizeof(readBuffer), m_inFile);
             if (!bytesRead) {
                 continue;
             }
             m_buffer.add(readBuffer, bytesRead);
-            resetPtrs();
+            m_end = m_buffer.getData() + m_buffer.getSize();
             while (m_currPtr < m_end) {
                 switch(m_parseState) {
                     case psH:
@@ -263,7 +264,7 @@ public:
         std::sort(paths.begin(), paths.end(), lambda);
 
         std::stringstream ss;
-        ss << "total urls " << m_count << " , domains " << m_domains.size() << " , paths " << m_paths.size() << std::endl;
+        ss << "total urls " << m_count << ", domains " << m_domains.size() << ", paths " << m_paths.size() << std::endl;
         fputs(ss.str().c_str(), m_outFile);
 
         fputs("\n", m_outFile);
